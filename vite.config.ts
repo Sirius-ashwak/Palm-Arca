@@ -23,7 +23,12 @@ export default defineConfig({
       "@": path.resolve(import.meta.dirname, "client", "src"),
       "@shared": path.resolve(import.meta.dirname, "shared"),
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      // Add explicit alias for wagmi to ensure it's resolved correctly
+      "wagmi": path.resolve(import.meta.dirname, "node_modules/wagmi"),
     },
+  },
+  optimizeDeps: {
+    include: ['wagmi', '@rainbow-me/rainbowkit'],
   },
   root: path.resolve(import.meta.dirname, "client"),
   build: {

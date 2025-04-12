@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { insertDatasetSchema, insertModelSchema, insertRelationshipSchema, datasetMetadataSchema } from "@shared/schema";
 import { z } from "zod";
 import { mockLighthouse } from "./lighthouse-mock";
+import authRoutes from "./auth";
 
 // Import lighthouse with a fallback mock implementation
 let lighthouse: any;
@@ -26,6 +27,19 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 
+// Define interface for multer file
+interface MulterFile {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  destination: string;
+  filename: string;
+  path: string;
+  buffer?: Buffer;
+}
+
 // Helper function to format file size
 function formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 Bytes';
@@ -40,6 +54,9 @@ function formatFileSize(bytes: number): string {
 export async function registerRoutes(app: Express): Promise<Server> {
   // API routes
   const apiRouter = express.Router();
+  
+  // Mount auth routes
+  apiRouter.use('/auth', authRoutes);
   
   // Datasets endpoints
   apiRouter.get("/datasets", async (req, res) => {
@@ -275,7 +292,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`Using ${process.env.LIGHTHOUSE_API_KEY ? 'real' : 'mock'} Lighthouse implementation`);
 
       // Create metadata file if metadata is provided
-      let allFiles = Array.isArray(req.files) ? [...req.files] : [req.files];
+      let allFiles: MulterFile[] = Array.isArray(req.files) ? req.files as MulterFile[] : [];
       
       if (req.body.metadata) {
         let metadata;
@@ -288,7 +305,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log(`Metadata file created at ${metadataPath}`);
           
           // Add metadata file (with required multer fields)
-          allFiles.push({
+          const metadataFile: MulterFile = {
             path: metadataPath,
             originalname: 'metadata.json',
             mimetype: 'application/json',
@@ -296,9 +313,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             encoding: '7bit',
             size: fs.statSync(metadataPath).size,
             destination: os.tmpdir(),
-            filename: 'metadata.json',
-            buffer: Buffer.from(JSON.stringify(metadata, null, 2))
-          } as any);
+            filename: 'metadata.json'
+          };
+          
+          // Add buffer if needed
+          if (Buffer.from) {
+            (metadataFile as any).buffer = Buffer.from(JSON.stringify(metadata, null, 2));
+          }
+          
+          allFiles.push(metadataFile);
         } catch (err) {
           console.error("Invalid metadata JSON", err);
           return res.status(400).json({ message: "Invalid metadata JSON", error: err instanceof Error ? err.message : String(err) });
@@ -317,13 +340,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log(`Processing file: ${file.originalname || 'unknown'}`);
           
           // Calculate size
-          if (typeof file.size === 'number') {
-            fileSize += file.size;
-          }
+          fileSize += file.size;
           
           // Check if file path exists
           if (!file.path || !fs.existsSync(file.path)) {
-            console.error(`File path does not exist: ${file.path}`);
+            console.error(`File path does not exist or is invalid: ${file.path}`);
             continue;
           }
           
@@ -351,9 +372,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Clean up temporary files
       console.log("Cleaning up temporary files");
-      allFiles.forEach((file: any) => {
+      allFiles.forEach((file: MulterFile) => {
         try {
-          if (fs.existsSync(file.path)) {
+          if (file.path && fs.existsSync(file.path)) {
             fs.unlinkSync(file.path);
             console.log(`Deleted temp file: ${file.path}`);
           }

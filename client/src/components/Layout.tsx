@@ -3,6 +3,8 @@ import Sidebar from "./Sidebar";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { WalletConnect } from "./WalletConnect";
+import { AuthButton } from "./AuthButton";
 
 interface LayoutProps {
   children: ReactNode;
@@ -38,6 +40,10 @@ const Layout = ({ children }: LayoutProps) => {
 
       {/* Main content */}
       <main className="flex-1 overflow-y-auto bg-background">
+        <div className="flex justify-end p-4">
+          <WalletConnect />
+          <AuthButton />
+        </div>
         {children}
       </main>
     </div>

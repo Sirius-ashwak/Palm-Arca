@@ -10,19 +10,28 @@ import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import RelationshipTable from "@/components/RelationshipTable";
 import DatasetLineage from "@/components/DatasetLineage";
+import { DataProvenance } from "@/components/DataProvenance";
+import { DataAttribution } from "@/components/DataAttribution";
 import { getFilecoinDealStatus } from "@/lib/web3storage";
+// Import all of wagmi as a namespace to avoid the specific import issues
+import * as wagmi from "wagmi";
+import { type Dataset, type Relationship } from "@shared/schema";
+
+// Use the useAccount hook from the namespace
+const useAccount = wagmi.useAccount;
 
 const DatasetDetails = () => {
   const { id } = useParams();
   const datasetId = parseInt(id as string);
   const [dealStatus, setDealStatus] = useState<any>(null);
   const [loadingDealStatus, setLoadingDealStatus] = useState(false);
+  const { address } = useAccount();
 
-  const { data: dataset, isLoading } = useQuery({
+  const { data: dataset, isLoading } = useQuery<Dataset>({
     queryKey: ["/api/datasets", datasetId],
   });
 
-  const { data: relationships } = useQuery({
+  const { data: relationships } = useQuery<Relationship[]>({
     queryKey: ["/api/relationships/dataset", datasetId],
     enabled: !!datasetId,
   });
@@ -105,6 +114,7 @@ const DatasetDetails = () => {
         <Tabs defaultValue="overview">
           <TabsList className="mb-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="provenance">Provenance</TabsTrigger>
             <TabsTrigger value="lineage">Lineage</TabsTrigger>
             <TabsTrigger value="usage">Model Usage</TabsTrigger>
           </TabsList>
@@ -310,6 +320,31 @@ const DatasetDetails = () => {
                   </CardContent>
                 </Card>
               </div>
+            </div>
+          </TabsContent>
+          
+          {/* Provenance Tab */}
+          <TabsContent value="provenance">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <DataProvenance 
+                datasetId={dataset.id.toString()}
+                cid={dataset.cid}
+                owner={address || "0x1234567890123456789012345678901234567890"}
+                timestamp={dataset.uploadedAt ? dataset.uploadedAt.toISOString() : new Date().toISOString()}
+                verified={dataset.status === "verified"}
+              />
+              
+              <DataAttribution 
+                contributors={[
+                  {
+                    address: address || "0x1234567890123456789012345678901234567890",
+                    contribution: "Dataset Creator",
+                    percentage: 100
+                  }
+                ]}
+                license={dataset.license || "MIT"}
+                revenueSharing={false}
+              />
             </div>
           </TabsContent>
           
