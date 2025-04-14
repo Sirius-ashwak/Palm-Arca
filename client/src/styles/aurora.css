@@ -1,0 +1,89 @@
+/* Aurora animation styles */
+@keyframes aurora-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.aurora-wave {
+  background-size: 200% 100%;
+  animation: aurora-shimmer 15s ease infinite;
+}
+
+.aurora-wave-slow {
+  background-size: 200% 100%;
+  animation: aurora-shimmer 25s ease infinite;
+}
+
+.aurora-wave-fast {
+  background-size: 200% 100%;
+  animation: aurora-shimmer 10s ease infinite;
+}
+
+/* Glow effect for text and buttons */
+.text-glow {
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.5), 
+    0 0 20px rgba(120, 87, 255, 0.3),
+    0 0 30px rgba(120, 87, 255, 0.2);
+}
+
+.glow-effect {
+  box-shadow: 
+    0 0 15px rgba(120, 87, 255, 0.5),
+    0 0 30px rgba(120, 87, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.glow-effect:hover {
+  box-shadow: 
+    0 0 20px rgba(120, 87, 255, 0.7),
+    0 0 40px rgba(120, 87, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Button glow variants */
+.glow-blue {
+  box-shadow: 
+    0 0 15px rgba(59, 130, 246, 0.5),
+    0 0 30px rgba(59, 130, 246, 0.2);
+}
+
+.glow-blue:hover {
+  box-shadow: 
+    0 0 20px rgba(59, 130, 246, 0.7),
+    0 0 40px rgba(59, 130, 246, 0.3);
+}
+
+.glow-purple {
+  box-shadow: 
+    0 0 15px rgba(147, 51, 234, 0.5),
+    0 0 30px rgba(147, 51, 234, 0.2);
+}
+
+.glow-purple:hover {
+  box-shadow: 
+    0 0 20px rgba(147, 51, 234, 0.7),
+    0 0 40px rgba(147, 51, 234, 0.3);
+}
+
+/* Glassmorphism effect */
+.glassmorphism {
+  background: rgba(15, 23, 42, 0.25);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Space background */
+.bg-space {
+  background: linear-gradient(to bottom, #0f172a, #1e293b);
+}
