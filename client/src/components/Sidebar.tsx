@@ -68,7 +68,7 @@ const Sidebar = ({ mobile, onClose }: SidebarProps) => {
           <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
             <GitBranch className="h-5 w-5 text-primary-foreground" />
           </div>
-          <h1 className="text-xl font-bold">Cactus</h1>
+          <h1 className="text-xl font-bold">Palm Arca</h1>
         </div>
       </div>
       

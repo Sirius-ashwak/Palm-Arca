@@ -1,6 +1,6 @@
-# Cactus
+# Palm Arca
 
-Cactus is a comprehensive platform for tracking, managing, and verifying datasets and models on IPFS/Filecoin using Lighthouse. It provides a robust solution for data lineage tracking, verification, and licensing management in AI/ML workflows.
+Palm Arca is a comprehensive platform for tracking, managing, and verifying datasets and models on IPFS/Filecoin using Lighthouse. It provides a robust solution for data lineage tracking, verification, and licensing management in AI/ML workflows.
 
 ## Features
 
@@ -42,7 +42,7 @@ Required environment variables:
 
 ```
 # Database
-DATABASE_URL=postgresql://username:password@localhost:5432/cactus
+DATABASE_URL=postgresql://username:password@localhost:5432/palmarca
 
 # Lighthouse
 LIGHTHOUSE_API_KEY=your_lighthouse_api_key
@@ -57,7 +57,7 @@ FIREBASE_CLIENT_EMAIL=your_firebase_client_email
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/Ccd Cactus
+   git clone https://github.com/yourusername/Palm-Arca
    ```
 
 2. Install dependencies:
@@ -96,12 +96,12 @@ yarn start
 
 ## Deployment to Render
 
-Cactus can be easily deployed to [Render](https://render.com) using the following configuration:
+Palm Arca can be easily deployed to [Render](https://render.com) using the following configuration:
 
 ### Web Service Configuration
 
 1. **Service Type**: Web Service
-2. **Name**: cactus (or your preferred name)
+2. **Name**: palm-arca (or your preferred name)
 3. **Environment**: Node
 4. **Region**: Choose the region closest to your users
 5. **Branch**: main (or your default branch)
@@ -176,7 +176,7 @@ Enable auto-deploy to automatically deploy changes when you push to your reposit
 
 2. Create a new Heroku app:
    ```bash
-   heroku create cactus
+   heroku create palm-arca
    ```
 
 3. Add a PostgreSQL database:
@@ -212,12 +212,12 @@ Enable auto-deploy to automatically deploy changes when you push to your reposit
 
 2. Initialize EB application:
    ```bash
-   eb init chainlenstracker --platform node.js --region us-east-1
+   eb init palm-arca --platform node.js --region us-east-1
    ```
 
 3. Create an environment:
    ```bash
-   eb create chainlenstracker-env
+   eb create palm-arca-env
    ```
 
 4. Set environment variables:
@@ -239,7 +239,7 @@ Enable auto-deploy to automatically deploy changes when you push to your reposit
 
 2. Build and deploy to Cloud Run:
    ```bash
-   gcloud run deploy chainlenstracker \
+   gcloud run deploy palm-arca \
      --source . \
      --platform managed \
      --region us-central1 \
@@ -295,7 +295,7 @@ Enable auto-deploy to automatically deploy changes when you push to your reposit
 
 ## Lighthouse Integration
 
-Cactus integrates with Lighthouse for decentralized storage on IPFS/Filecoin. To use this feature:
+Palm Arca integrates with Lighthouse for decentralized storage on IPFS/Filecoin. To use this feature:
 
 1. Create an API key at [Lighthouse Files](https://files.lighthouse.storage/)
 2. Add the API key to your `.env` file

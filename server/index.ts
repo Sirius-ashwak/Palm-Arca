@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 // Setup session store
 const MemoryStoreSession = MemoryStore(session);
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'cactus-secret-key',
+  secret: process.env.SESSION_SECRET || 'palm-arca-secret-key',
   resave: false,
   saveUninitialized: false,
   cookie: { 
